@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Anniversary | Forever Love</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Root Colors */
+        :root {
+            --love-pink: #ff69b4;
+            --gold: #ffd700;
+            --heart-red: #ff2d55;
+            --dark-bg: #1a1a1a;
+        }
+
+        /* Body Styling */
+        body {
+            background: linear-gradient(45deg, var(--dark-bg), #2a0a2a);
+            color: white;
+            font-family: 'Dancing Script', cursive;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            animation: heartbeat 1.5s infinite;
+            text-shadow: 0 0 20px var(--love-pink);
+            color: var(--heart-red);
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            background: rgba(255, 105, 180, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem auto;
+            width: 80%;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--love-pink);
+            box-shadow: 0 0 30px var(--love-pink);
+        }
+
+        #days-counter {
+            font-size: 3rem;
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold);
+            margin: 1rem 0;
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .music-player button {
+            background: var(--love-pink);
+            border: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .music-player input[type="range"] {
+            width: 100px;
+        }
+
+        /* Keyframe Animations */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <a href="home.html" class="active">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="videos.html">Videos</a>
+        <a href="letters.html">Love Letters</a>
+        <a href="about.html">Our Story</a>
+    </nav>
+
+    <header>
+        <h1>Our Forever Love</h1>
+        <p style="font-size: 1.5rem;">❤️ 24 June 2024 - Eternal Love ❤️</p>
+    </header>
+
+    <div class="countdown">
+        <h2 style="text-align: center; font-size: 2.5rem;">We've Been Together For:</h2>
+        <div id="days-counter"></div>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <button id="play-btn">▶️</button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.1">
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" loop>
+        <source autocapitalize="auto-play" src="music/cherry.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        // Auto-Calculating Days Together
+        function calculateDaysTogether() {
+            const startDate = new Date("2024-06-24");
+            const today = new Date();
+            const difference = today - startDate;
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            document.getElementById('days-counter').innerHTML = days + " Days of Love ❤️";
+        }
+        // Background Music Controls
+        const music = document.getElementById("bg-music");
+        const playBtn = document.getElementById("play-btn");
+        const volumeSlider = document.getElementById("volume-slider");
+
+        // Auto-Play Music when the website loads
+        document.addEventListener("DOMContentLoaded", function () {
+            // Set default volume
+            music.volume = 0.5;
+
+            // Try to auto-play the music
+            music.play().then(() => {
+                console.log("Music started playing!");
+                playBtn.textContent = "⏸️"; // Show pause icon
+            }).catch((error) => {
+                console.log("Autoplay was blocked: ", error);
+                // If autoplay is blocked, wait for user interaction
+                document.body.addEventListener("click", function () {
+                    music.play();
+                    playBtn.textContent = "⏸️";
+                });
+            });
+        });
+
+        // Auto-Pause Music when the user leaves the website
+        window.addEventListener("beforeunload", function () {
+            music.pause();
+            console.log("Music paused as the user is leaving the site.");
+        });
+
+        // Play/Pause Button
+        playBtn.addEventListener("click", function () {
+            if (music.paused) {
+                music.play();
+                playBtn.textContent = "⏸️";
+            } else {
+                music.pause();
+                playBtn.textContent = "▶️";
+            }
+        });
+
+        // Volume Control
+        volumeSlider.addEventListener("input", function () {
+            music.volume = volumeSlider.value;
+        });
+
+        // Run Countdown
+        calculateDaysTogether();
+    </script>
+
+</body>
+</html>
